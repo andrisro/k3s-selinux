@@ -2,12 +2,20 @@ CENTOS7_TARGETS := $(addprefix centos7-,$(shell ls policy/centos7/scripts))
 CENTOS8_TARGETS := $(addprefix centos8-,$(shell ls policy/centos8/scripts))
 MICROOS_TARGETS := $(addprefix microos-,$(shell ls policy/microos/scripts))
 
-.dapper:
-	@echo Downloading dapper
-	@curl -sL https://releases.rancher.com/dapper/latest/dapper-$$(uname -s)-$$(uname -m) > .dapper.tmp
+#.dapper:
+#	@echo Downloading dapper
+#	@curl -sL https://releases.rancher.com/dapper/latest/dapper-$$(uname -s)-$$(uname -m) > .dapper.tmp
+#	@@chmod +x .dapper.tmp
+#	@./.dapper.tmp -v
+#	@mv .dapper.tmp .dapper
+
+.dapper: 
+	@echo Using local dapper file
+	@mv dapper-Linux-x86_64 dapper.tmp
 	@@chmod +x .dapper.tmp
 	@./.dapper.tmp -v
-	@mv .dapper.tmp .dapper
+	@mv .dapper.tmp .dapper	
+
 
 $(CENTOS7_TARGETS): .dapper
 	./.dapper -f Dockerfile.centos7.dapper $(@:centos7-%=%)
